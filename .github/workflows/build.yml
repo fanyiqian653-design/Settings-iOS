@@ -25,7 +25,6 @@ jobs:
             -derivedDataPath ./build \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
-            -arch arm64 \
             CODE_SIGNING_ALLOWED=NO \
             OTHER_CODE_SIGN_FLAGS="--deep" \
             IPHONEOS_DEPLOYMENT_TARGET=15.0 \
