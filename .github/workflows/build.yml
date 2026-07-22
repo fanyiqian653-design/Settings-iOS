@@ -23,10 +23,11 @@ jobs:
             -scheme Preferences \
             -configuration Release \
             -derivedDataPath ./build \
-            -destination 'generic/platform=iOS' \
+            -sdk iphoneos \
             CODE_SIGNING_ALLOWED=NO \
             OTHER_CODE_SIGN_FLAGS="--deep" \
             IPHONEOS_DEPLOYMENT_TARGET=15.0 \
+            SUPPORTED_PLATFORMS=iphoneos \
             build
 
       - name: Create Payload and zip as .ipa
