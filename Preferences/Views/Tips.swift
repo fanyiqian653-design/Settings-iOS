@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if canImport(TipKit)
 import TipKit
 
 // MARK: Image Creation Tools Are Here
@@ -83,3 +84,4 @@ struct AppleIntelligenceTipView: View {
             .padding(.leading, 70)
     }
 }
+#endif
