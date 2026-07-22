@@ -1,0 +1,37 @@
+name: Build IPA (No Sign)
+
+on:
+  push:
+    branches: [ "18.5" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build .app (skip signing)
+        run: |
+          xcodebuild \
+            -project Preferences.xcodeproj \
+            -scheme Preferences \
+            -configuration Release \
+            -derivedDataPath ./build \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            OTHER_CODE_SIGN_FLAGS="--deep" \
+            build
+
+      - name: Create Payload and zip as .ipa
+        run: |
+          mkdir -p Payload
+          cp -R ./build/Build/Products/Release-iphoneos/Preferences.app Payload/
+          zip -r Settings-iOS_18.5_unsigned.ipa Payload
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Settings-iOS-18.5-unsigned
+          path: Settings-iOS_18.5_unsigned.ipa
