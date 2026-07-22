@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+#if canImport(TipKit)
 import TipKit
+#endif
 
 struct ContentView: View {
     // Variables
@@ -51,12 +53,14 @@ struct ContentView: View {
                                 }
                                 .foregroundStyle(.primary)
                                 
+                                #if canImport(TipKit)
                                 if siriEnabled && UIDevice.IntelligenceCapability {
                                     // MARK: TipKit Section
                                     Section {
                                         ImageCreationTipView()
                                     }
                                 }
+                                #endif
                                 
                                 if !followUpDismissed && !UIDevice.IsSimulator {
                                     Section {
@@ -173,12 +177,14 @@ struct ContentView: View {
                                     }
                                 }
                                 
+                                #if canImport(TipKit)
                                 if siriEnabled && UIDevice.IntelligenceCapability {
                                     // MARK: TipKit Section
                                     Section {
                                         ImageCreationTipView()
                                     }
                                 }
+                                #endif
                                 
                                 if !followUpDismissed && !UIDevice.IsSimulator {
                                     Section {
@@ -270,7 +276,9 @@ struct ContentView: View {
                 }
             }
             .onAppear {
+                #if canImport(TipKit)
                 try? Tips.configure()
+                #endif
             }
         }
     }
