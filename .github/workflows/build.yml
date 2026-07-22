@@ -1,16 +1,18 @@
 name: Build IPA (No Sign)
+
 on:
   push:
     branches: [ "18.5" ]
   workflow_dispatch:
+
 jobs:
   build:
-    runs-on: macos-15          # 保持 macos-15，但它默认自带 Xcode 16
+    runs-on: macos-15
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 🔧 关键：显式切换到 Xcode 16（macos-15 默认路径一般是 /Applications/Xcode_16.app）
       - name: Select Xcode 16
         run: sudo xcode-select -s /Applications/Xcode_16.app
 
@@ -24,15 +26,14 @@ jobs:
             -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO \
             OTHER_CODE_SIGN_FLAGS="--deep" \
-            IPHONEOS_DEPLOYMENT_TARGET=15.0 \   # 🆕 强制最低系统为 iOS 15
-            -verbose \
+            IPHONEOS_DEPLOYMENT_TARGET=15.0 \
             build
 
       - name: Create Payload and zip as .ipa
         run: |
           mkdir -p Payload
           cp -R ./build/Build/Products/Release-iphoneos/Preferences.app Payload/
-          zip -r Settings-iOS_15.0_unsigned.ipa Payload   # 改名以示区分
+          zip -r Settings-iOS_15.0_unsigned.ipa Payload
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
