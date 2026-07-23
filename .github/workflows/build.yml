@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15                # 使用 Xcode 16+ 的 macOS 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
