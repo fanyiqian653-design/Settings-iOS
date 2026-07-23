@@ -21,7 +21,6 @@ struct ImageCreationTip: Tip {
     
     var image: Image? {
         Image("GM_ADM_CFU_IMAGE")
-        
     }
 }
 
@@ -29,7 +28,7 @@ struct ImageCreationTipView: View {
     var body: some View {
         TipView(ImageCreationTip())
             .padding(-15)
-            .tipBackground(Color.background)
+            .tipBackground(Color(UIColor.systemBackground))  // ✅ 改用兼容颜色
             .task {
                 do {
                     try Tips.configure([
@@ -60,14 +59,13 @@ struct AppleIntelligenceTip: Tip {
     var image: Image? {
         Image(systemName: "apple.intelligence")
             .symbolRenderingMode(.multicolor)
-            
     }
 }
 
 struct AppleIntelligenceTipView: View {
     var body: some View {
         TipView(AppleIntelligenceTip())
-            .tipBackground(Color.background)
+            .tipBackground(Color(UIColor.systemBackground))  // ✅ 改用兼容颜色
             .task {
                 do {
                     try Tips.configure([
