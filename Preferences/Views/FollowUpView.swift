@@ -2,38 +2,54 @@
 //  FollowUpView.swift
 //  Preferences
 //
-//  Settings > Finish Setting Up Your [DEVICE]
+//  Settings > FollowUp
 //
 
 import SwiftUI
+#if canImport(TipKit)
+import TipKit
+#endif
 
 struct FollowUpView: View {
     // Variables
-    @Environment(\.dismiss) var dismiss
-    @State var stateManager = StateManager()
     @AppStorage("FollowUpDismissed") private var followUpDismissed = false
-    let coreTable = "CoreFollowUp"
-    let table = "FollowUp"
+    @State private var opacity: Double = 0.0
+    @State private var frameY: Double = 0.0
+    @State private var showingFeedback = false
+    @State private var path: [AnyHashable] = []
     
     var body: some View {
-        CustomList(title: "MULTI_FOLLOW_LIST_TITLE".localize(table: coreTable)) {
+        CustomList(title: "FOLLOWUP_TITLE".localize(table: "FollowUp"), topPadding: true) {
             Section {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("FOLLOWUP_TITLE", tableName: table)
-                        .fontWeight(.semibold)
-                    Text(UIDevice.PearlIDCapability ? "FOLLOWUP_DETAIL_FACEID" : "FOLLOWUP_DETAIL_TOUCHID", tableName: table)
-                }
-                Button("FOLLOWUP_ACTION_LABEL_ALL".localize(table: table)) {
-                    if UIDevice.iPad {
-                        stateManager.selection = .general
-                        stateManager.destination = AnyView(GeneralView())
-                    } else if UIDevice.iPhone {
-                        dismiss()
+                Placard(title: "FOLLOWUP_PLACARD_TITLE".localize(table: "FollowUp"), color: .blue, icon: "person.crop.circle.badge.questionmark", description: "FOLLOWUP_PLACARD_SUBTITLE".localize(table: "FollowUp"), frameY: $frameY, opacity: $opacity)
+            }
+            
+            #if canImport(TipKit)
+            Section {
+                ImageCreationTipView()
+            }
+            #endif
+            
+            Section {
+                Button {
+                    followUpDismissed = true
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("Done")
+                            .fontWeight(.semibold)
+                        Spacer()
                     }
-                    withAnimation {
-                        followUpDismissed = true
-                    }
                 }
+            }
+            .listRowBackground(Color.clear)
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("FOLLOWUP_TITLE", tableName: "FollowUp")
+                    .fontWeight(.semibold)
+                    .font(.subheadline)
+                    .opacity(frameY < 50.0 ? opacity : 0)
             }
         }
     }
