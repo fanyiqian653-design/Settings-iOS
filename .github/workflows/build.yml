@@ -7,23 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14               # 锁定使用 macOS 14 (包含 Xcode 15)
+    runs-on: macos-14
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build .app (skip signing)
         run: |
-          xcodebuild \
-            -project Preferences.xcodeproj \
-            -scheme Preferences \
-            -configuration Release \
-            -derivedDataPath ./build \
-            -sdk iphoneos \          # 强制使用真机 SDK
-            CODE_SIGNING_ALLOWED=NO \
-            OTHER_CODE_SIGN_FLAGS="--deep" \
-            -verbose \
-            build
+          xcodebuild -project Preferences.xcodeproj -scheme Preferences -configuration Release -derivedDataPath ./build -sdk iphoneos CODE_SIGNING_ALLOWED=NO OTHER_CODE_SIGN_FLAGS="--deep" -verbose build
 
       - name: Create Payload and zip as .ipa
         run: |
